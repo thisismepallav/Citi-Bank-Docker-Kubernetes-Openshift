@@ -69,19 +69,19 @@ app.get('/people', async (req, res) => {
 
 app.listen(3000);
 
-const connectToMongoDB = async () => {
-  try {
-    await mongoose.connect('mongodb://mongodb_container_name:27017/mydatabase', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('Connected to MongoDB');
-    app.listen(3000);
+// const connectToMongoDB = async () => {
+//   try {
+//     await mongoose.connect('mongodb://mongodb_container_name:27017/mydatabase', {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//     console.log('Connected to MongoDB');
+//     app.listen(3000);
 
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
-  }
-};
+//   } catch (error) {
+//     console.error('Error connecting to MongoDB:', error);
+//   }
+// };
 
 
-connectToMongoDB();
+// connectToMongoDB();

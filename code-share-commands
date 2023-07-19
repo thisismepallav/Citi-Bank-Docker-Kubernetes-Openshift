@@ -1,0 +1,186 @@
+
+https://github.com/anurag-chiplunkar/Citi-Bank-Docker-Kubernetes-Openshift
+
+
+
+29. Post creation of the folder structure execute these commands
+npm init
+npm install express fs path body-parser
+
+
+Day 1
+1. docker --version
+2. docker version
+3. docker --help
+4. docker <command> --help
+
+## Docker images creation
+2. create app.js
+3. copy the code from codeshare.io
+4. open new terminal
+5. type 'npm init'
+6. type 'npm install express'
+7. after deleting the dependencies type 'npm install'
+8. create a Docker file
+FROM - Defines a base for your image
+WORKDIR - Sets the working directory for instructions
+COPY - Copies new files or directories from src to dest
+RUN - Executes any command in a new layer
+EXPOSE - Exposing the port as public
+CMD - Command to be executed to run the program
+9. build docker image - 'docker build .'
+10. run the docker image - 'docker run <imageName>
+11. to check the running containers - 'docker ps'
+12. stop the running container immediately - 'docker kill [containerID]'
+13. stop the running container - 'docker stop [containerID]'
+14. to check all images - 'docker images'
+15. to check all processes - 'docker ps -a'
+16. to start a stopped container - 'docker start [<containerName>] or containerID'
+17. to start container in detached mode - 'docker run -d -p exposedDockerPort:applicationServerPort imageName'
+18. to get attached to a container in attach mode - 'docker attach conatinerName'
+19. to remove one or more containers (stopped containers) - 'docker rm [containerName]'
+20. to remove one or more images (not connected to any running container) - 'docker rmi [imageName]' 
+21. to remove a container once it is stopped/killed - 'docker run -d -p exposedDockerPort:serverPort --rm imageName'
+22. to name a container - 'docker --name name imageName'
+24. to give name and tag to an image - 'docker build -t name:tag .'
+25. to start a container with custom imagename - 'docker run -p 80:3000 -d --rm --name nodecontainer name:tag'
+26. to delete all unused images - 'docker image prune -a'
+26.1 to delete all unused container - docker container prune
+27. to rename the existing image - docker tag 'oldImageName:tag' 'newImageName'
+28. to push local image to dockerhub
+28.1 login using - 'docker login'
+28.1.1 enter usename and password
+28.2 push the local image - 'docker push imageName'
+
+
+
+
+
+
+------------------------------------------------------------------------------
+
+------------volumes------------------------------------
+
+
+29. Post creation of the folder structure execute these commands
+npm init
+npm install express fs path body-parser
+
+
+30. Docker volumes
+to get help for volume commands - 'docker volume --help'
+31. list all available volumes - 'docker volume ls'
+32. to create named volume - '-v nameofVolume:path_inside_the_container'
+33. to inspect the volume - 'docker volume inspect volumeName'
+34. to create named volumes - docker run -d -p 8000:8000 --name feedback-con -v feedback:/app/feedback feedback-app:1.0
+
+1. build the image
+2. start the container with named volume flag
+3. start the browser save the data
+4. delete the container or remove the container
+5. check the processes docker ps and docker ps -a
+6. check the volumes - docker volume ls
+7. start a new container by attaching the previously created volume
+8. check the data on the site
+
+Volumes
+1. inside the 3 Docker Volumes folder - npm init
+2. inside the 3 Docker Volumes folder - npm install express fs path body-parser
+3. create docker image
+4. create a container with the newly created image
+5. stop the conatiner
+6. restart the container - docker start containerName
+7. then kill the container
+8. remove it
+9. re-create new container, then check the previously available data.
+10. to create anonymous volume; inside the docker file add VOLUME [ "/app/feedback ]
+11. to list all available volumes - docker volume ls
+12. to remove unused volumes - docker volume prune
+13. to create named volumes - docker run -d -p 8000:8000 --name feedback-con -v feedback:/app/feedback feedback-app:1.0
+
+
+
+
+
+const fs = require('fs').promises;
+const exists = require('fs').exists;
+const path = require('path');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static('public'));
+app.use('/feedback', express.static('feedback'));
+
+app.get('/', (req, res) => {
+  const filePath = path.join(__dirname, 'pages', 'feedback.html');
+  res.sendFile(filePath);
+});
+
+app.get('/exists', (req, res) => {
+  const filePath = path.join(__dirname, 'pages', 'exists.html');
+  res.sendFile(filePath);
+});
+
+app.post('/create', async (req, res) => {
+  const title = req.body.title;
+  const content = req.body.text;
+
+  const adjTitle = title.toLowerCase();
+
+  const tempFilePath = path.join(__dirname, 'temp', adjTitle + '.txt');
+  const finalFilePath = path.join(__dirname, 'feedback', adjTitle + '.txt');
+
+  await fs.writeFile(tempFilePath, content);
+  e
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  sts(finalFilePath, async (exists) => {
+    if (exists) {
+      res.redirect('/exists');
+    } else {
+      await fs.copyFile(tempFilePath, finalFilePath);
+      await fs.unlink(tempFilePath);
+      res.redirect('/');
+    }
+  });
+});
+
+app.listen(8000);
+
+
+
+
+
+
+
+--------------- Networking
+1. npm init
+2. npm install express axios body-parser mongoose 
+2.1 download the mongo image and also run it using: docker run --name <containerName> -d mongo:4
+3. to create a common network - 'docker network create <networkName>'
+4. to get network help - 'docker network --help'
+5. to list all existing networks - 'docker network ls'
+6. to create mongodb container in the network - 'docker run -d --name mongodb --network favorites-net mongo'
+6.1 change the ip of database container to name of the database container in the code and recreate the image of the application.
+7. to start a container inside the same network - 'docker run --name favorites-container --network favorites-net -p 3000:3000 favorites:image'
+
+
+{
+	"name": "A new start",
+	"type": "movie",
+	"url": "https:/flims/api/filmss/1/"
+}
